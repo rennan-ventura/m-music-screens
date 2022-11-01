@@ -1,6 +1,12 @@
 
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, triangleCornerTopRight, TriangleCorner , ImageBackground} from 'react-native'
+import { View, 
+  Text, 
+  StyleSheet, 
+  TouchableOpacity, 
+  triangleCornerTopRight, 
+  TriangleCorner , 
+  ImageBackground} from 'react-native'
 import { TextInput, Button} from 'react-native-paper'
 
 import { useNavigation } from '@react-navigation/native'

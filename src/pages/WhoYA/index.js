@@ -5,18 +5,18 @@ import { View,
     TouchableOpacity, 
     ImageBackground, 
     Animated } from 'react-native'
-import { TextInput, Button, RadioButton } from 'react-native-paper'
+import { TextInput, Button, RadioButton, Checkbox } from 'react-native-paper'
 
 import * as Animatable from 'react-native-animatable'
 
 import { useNavigation } from '@react-navigation/native'
+import { RadioButtonLabel } from 'react-native-simple-radio-button';
 
 
 
 export default function WhoYA() {
   const navigation = useNavigation();
-  const [checked, setChecked] = useState('Cliente');
-  const [value, setValue] = useState('Cliente');
+  const [checked, setChecked] = useState('cliente');
 
  return (
    <View  style={styles.container}>
@@ -49,27 +49,42 @@ export default function WhoYA() {
         duration={1000}
         >
 
-      <RadioButton
-          style={styles.radioButton}
-          text="Cliente"
-          value='Cliente'
-          status={ checked === 'Cliente' ? 'checked' : 'unchecked' }
-          onPress={() => setChecked('Cliente')}
+    
+    <RadioButton.Item
+        style={styles.radioButton1}
+        label='Cliente'
+        value="cliente"
+        status={ checked === 'cliente' ? 'checked' : 'unchecked' }
+        onPress={() => setChecked('cliente')}
+        color='#3597A6'
       />
-      <Text style={{ color:"white" }}>Cliente</Text>
-      <RadioButton
-          data = {"Musico"}
-          value="Musico"
-          status={ checked === 'Musico' ? 'checked' : 'unchecked' }
-          onPress={() => setChecked('Musico')}
+      <RadioButton.Item
+      style={styles.radioButton2}
+        label='Musico'
+        value="musico"
+        status={ checked === 'musico' ? 'checked' : 'unchecked' }
+        onPress={() => setChecked('musico')}
+        color='#FFB052'
       />
-
-        <RadioButton.Group onValueChange={value => setValue(value)} value={value}>
-            <RadioButton.Item label="First item" color='white' value="Cliente" />
-            <RadioButton.Item label="Second item" value="Musico" />
-        </RadioButton.Group>
+      <RadioButton.Item
+      style={styles.radioButton3}
+        label='Restaurante'
+        value="restaurante"
+        status={ checked === 'restaurante' ? 'checked' : 'unchecked' }
+        onPress={() => setChecked('restaurante')}
+        color='#3D3778'
+      />
 
       </Animatable.View>
+      
+        <TouchableOpacity 
+        style={styles.button}
+        onPress={ () => checked === 'cliente' ? navigation.navigate('SignUpCliente') : 
+        checked === 'musico' ? navigation.navigate('SignUpMusico') : 
+        checked === 'restaurante' ? navigation.navigate('SignUpRestaurante') : 
+        alert("Por favor selecione uma das opções")} >
+          <Text style={styles.buttonText}>Acessar</Text>
+        </TouchableOpacity>
 
     </View>
 
@@ -123,8 +138,37 @@ const styles = StyleSheet.create({
         borderStyle: 'solid',
         borderWidth: 2
     },
-    radioButton:{
-      textDecorationColor: "white",
-      
-    }
+    radioButton1:{
+        backgroundColor: '#3597A6',
+        borderRadius: 10,
+        marginTop: 15,
+        opacity: 0.5,
+    },
+    radioButton2:{
+        backgroundColor: '#FFB052',
+        borderRadius: 10,
+        marginTop: 15,
+        opacity: 0.5
+    },
+    radioButton3:{
+        backgroundColor: '#3D3778',
+        borderRadius: 10,
+        marginTop: 15,
+        opacity: 0.5
+    },
+    button:{
+      backgroundColor: '#3D3778',
+      width: '60%',
+      borderRadius: 20,
+      paddingVertical: 8,
+      marginTop: 14,
+      justifyContent: 'center',
+      alignItems: 'center',
+      alignSelf: 'center',
+    },
+    buttonText:{
+      color: '#fff',
+      fontSize: 18,
+      fontWeight: 'bold'
+    },
   })
