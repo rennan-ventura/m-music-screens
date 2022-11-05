@@ -1,43 +1,51 @@
-
 import React from 'react';
 import { View, 
   Text, 
   StyleSheet, 
   TouchableOpacity, 
-  triangleCornerTopRight, 
-  TriangleCorner , 
-  ImageBackground} from 'react-native'
+  } from 'react-native'
 import { TextInput, Button} from 'react-native-paper'
 
 import { useNavigation } from '@react-navigation/native'
 
 import * as Animatable from 'react-native-animatable'
 
-export default function SignIn() {
+export default function SignUpMusico() {
   const navigation = useNavigation();
  return (
    <View  style={styles.container}>
-    <ImageBackground
-      source={require('../../assets/fundo.png')}
-      style={styles.containerBack}
-    >
       
     <View style={styles.containerLogo}>
     <Button icon="arrow-u-left-top"
      style={styles.buttonVoltar}
-     onPress={ () => navigation.navigate('Welcome')}/>
+     onPress={ () => navigation.navigate('WhoYA')}/>
     <Animatable.Image
           animation="fadeIn"
-          source={require('../../assets/Logo3.png')}
-          style={{ width: '100%' }}
+          source={require('../../assets/logo.png')}
+          style={styles.Image}
           resizeMode='contain'
           alignSelf='center'
         />
+      
     </View>
+    <View style={styles.containerWelcome}>
 
+      <Animatable.Text style={styles.textoWelcome} animation='fadeInLeft' >Bem-Vindo(a)</Animatable.Text>
+
+    </View>
     <Animatable.View animation="fadeInUp" style={styles.containerForm}>
+
+    <TextInput style={styles.textInput1}
+        placeholder="Digite seu nome..."
+        mode='outlined'
+        label="Nome"
+        textColor='white'
+        outlineColor='#fff'
+        activeOutlineColor='#3D3778'
+      />
+
       <TextInput style={styles.textInput1}
-        placeholder="Digite um email..."
+        placeholder="Digite seu email..."
         mode='outlined'
         label="Email"
         textColor='white'
@@ -45,10 +53,28 @@ export default function SignIn() {
         activeOutlineColor='#3D3778'
       />
 
-      <TextInput style={styles.textInput2}
-        placeholder="Digite sua senha..."
+      <TextInput style={styles.textInput1}
+        placeholder="Digite uma senha..."
         mode='outlined'
         label="Senha"
+        textColor='white'
+        outlineColor='#fff'
+        activeOutlineColor='#3D3778'
+      />
+
+      <TextInput style={styles.textInput1}
+        placeholder="Confirme sua senha..."
+        mode='outlined'
+        label="Confirmar senha"
+        textColor='white'
+        outlineColor='#fff'
+        activeOutlineColor='#3D3778'
+      />
+
+      <TextInput style={styles.textInput1}
+        placeholder="Digite sua data de nascimento..."
+        mode='outlined'
+        label="Data de nascimento"
         textColor='white'
         outlineColor='#fff'
         activeOutlineColor='#3D3778'
@@ -58,16 +84,8 @@ export default function SignIn() {
         <Text style={styles.buttonText}>Acessar</Text>
       </TouchableOpacity>
 
-      <TouchableOpacity 
-      style={styles.buttonRegister}
-      onPress={ () => navigation.navigate('WhoYA')}
-      >
-        <Text style={styles.registerText}>Não possui uma conta? Cadastre-se</Text>
-      </TouchableOpacity>
 
     </Animatable.View>
-
-    </ImageBackground>
    </View>  
     
   );
@@ -82,11 +100,16 @@ const styles = StyleSheet.create({
     flex:1,
     backgroundColor: 'transparent',
     justifyContent: 'center',
-    
+    borderBottomWidth: 4,
+    borderBottomColor: '#3D3778'
+  },
+  Image:{
+     width: '100%',
+     alignSelf: 'center',
   },
   containerForm:{
     backgroundColor: 'transparent',
-    flex: 1,
+    flex: 5,
     borderTopLeftRadius: 25,
     borderTopRightRadius: 25,
     paddingStart: '5%',
@@ -111,39 +134,28 @@ const styles = StyleSheet.create({
     marginTop: 14,
     alignSelf: 'center'
   },
-  registerText:{
-    color: '#a1a1a1'
-  },
   textInput1: {
-    backgroundColor: '#1f1f1f',
-
-    
-  },
-  textInput2: {
-    marginTop: 15,
+    marginTop: 20,
     backgroundColor: '#1f1f1f',
   },
-  /*triangle:{
-    width: 0,
-    height: 0,
-    backgroundColor: "transparent",
-    borderStyle: "solid",
-    borderRightWidth: 125,
-    borderTopWidth: 110,
-    borderRightColor: "transparent",
-    borderTopColor: "#3D3778",
-    transform: [{rotate: "90deg"}],
-    alignSelf: 'flex-end'
-    <Animatable.View style={styles.triangle} animation="" />
-  }, */
   containerBack: {
     flex: 1,
     resizeMode: "cover"
   },
   buttonVoltar:{
     alignSelf: 'baseline',
-    alignItems: 'center'
-    
+    alignItems: 'center',
+    marginTop: 5,
+  },
+  textoWelcome: {
+    fontSize: 25,
+    color: 'white',
+    marginTop: 20,
+    marginLeft: 20,
+    fontWeight: 'bold'
+  },
+  containerWelcome: {
+    height: 60,
   }
 
 })
