@@ -16,7 +16,7 @@ export default function SignIn() {
  return (
    <View  style={styles.container}>
     <ImageBackground
-      source={require('../../assets/fundo.png')}
+      source={require('../../../assets/fundo.png')}
       style={styles.containerBack}
     >
       
@@ -26,7 +26,7 @@ export default function SignIn() {
      onPress={ () => navigation.navigate('Welcome')}/>
     <Animatable.Image
           animation="fadeIn"
-          source={require('../../assets/Logo3.png')}
+          source={require('../../../assets/Logo3.png')}
           style={{ width: '100%' }}
           resizeMode='contain'
           alignSelf='center'

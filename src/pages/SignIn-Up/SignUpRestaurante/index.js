@@ -21,7 +21,7 @@ export default function SignUpRestaurante() {
      onPress={ () => navigation.navigate('WhoYA')}/>
     <Animatable.Image
           animation="fadeIn"
-          source={require('../../assets/logo.png')}
+          source={require('../../../assets/logo.png')}
           style={styles.Image}
           resizeMode='contain'
           alignSelf='center'
@@ -30,7 +30,7 @@ export default function SignUpRestaurante() {
     </View>
     <View style={styles.containerWelcome}>
 
-      <Animatable.Text style={styles.textoWelcome} animation='fadeInLeft' >Bem-Vindo(a)</Animatable.Text>
+      <Animatable.Text style={styles.textoWelcome} animation='fadeInLeft' >Bem-Vindo</Animatable.Text>
 
     </View>
     <Animatable.View animation="fadeInUp" style={styles.containerForm}>
@@ -72,15 +72,16 @@ export default function SignUpRestaurante() {
       />
 
       <TextInput style={styles.textInput1}
-        placeholder="Digite sua data de nascimento..."
+        placeholder="Digite um CNPJ..."
         mode='outlined'
-        label="Data de nascimento"
+        label="cnpj"
         textColor='white'
         outlineColor='#fff'
         activeOutlineColor='#3D3778'
       />
 
-      <TouchableOpacity style={styles.button}>
+      <TouchableOpacity style={styles.button}
+                        onPress={() => navigation.navigate('HomeEstabelecimento')}>
         <Text style={styles.buttonText}>Acessar</Text>
       </TouchableOpacity>
 

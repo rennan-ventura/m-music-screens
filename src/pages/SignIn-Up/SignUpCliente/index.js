@@ -22,7 +22,7 @@ export default function SignUpCliente() {
      onPress={ () => navigation.navigate('WhoYA')}/>
     <Animatable.Image
           animation="fadeIn"
-          source={require('../../assets/logo.png')}
+          source={require('../../../assets/logo.png')}
           style={styles.Image}
           resizeMode='contain'
           alignSelf='center'
@@ -81,8 +81,9 @@ export default function SignUpCliente() {
         activeOutlineColor='#3D3778'
       />
 
-      <TouchableOpacity style={styles.button}>
-        <Text style={styles.buttonText}>Acessar</Text>
+      <TouchableOpacity style={styles.button}
+                        onPress={() => navigation.navigate('HomeCliente')}>
+        <Text style={styles.buttonText} >Acessar</Text>
       </TouchableOpacity>
 
 

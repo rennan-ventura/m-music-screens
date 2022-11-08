@@ -21,7 +21,7 @@ export default function SignUpMusico() {
      onPress={ () => navigation.navigate('WhoYA')}/>
     <Animatable.Image
           animation="fadeIn"
-          source={require('../../assets/logo.png')}
+          source={require('../../../assets/logo.png')}
           style={styles.Image}
           resizeMode='contain'
           alignSelf='center'
@@ -71,16 +71,8 @@ export default function SignUpMusico() {
         activeOutlineColor='#3D3778'
       />
 
-      <TextInput style={styles.textInput1}
-        placeholder="Digite sua data de nascimento..."
-        mode='outlined'
-        label="Data de nascimento"
-        textColor='white'
-        outlineColor='#fff'
-        activeOutlineColor='#3D3778'
-      />
-
-      <TouchableOpacity style={styles.button}>
+      <TouchableOpacity style={styles.button}
+                        onPress={() => navigation.navigate('HomeMusico')}>
         <Text style={styles.buttonText}>Acessar</Text>
       </TouchableOpacity>
 
