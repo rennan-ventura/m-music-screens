@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, {useState} from 'react';
 import { View, 
   Text, 
   StyleSheet, 
@@ -7,12 +7,33 @@ import { View,
   ImageBackground} from 'react-native'
 import { TextInput, Button} from 'react-native-paper'
 
+import { useForm, Controller } from 'react-hook-form'
+
+import { yupResolver } from '@hookform/resolvers/yup'
+
+import * as yup from 'yup'
+
 import { useNavigation } from '@react-navigation/native'
 
 import * as Animatable from 'react-native-animatable'
 
+const schema = yup.object({
+  email: yup.string().email("Email Invalido").required("Informe seu email"),
+  password: yup.string().min(6, "A senha deve ter pelo menos 6 digitos").required("Informe sua senha")
+})
+
+
 export default function SignIn() {
   const navigation = useNavigation();
+  const { control, handleSubmit, formState: { errors } } = useForm({
+    resolver: yupResolver(schema)
+
+  })
+
+  function handleSignIn(){
+    navigation.navigate('HomeCliente')
+  }
+
  return (
    <View  style={styles.container}>
     <ImageBackground
@@ -34,25 +55,51 @@ export default function SignIn() {
     </View>
 
     <Animatable.View animation="fadeInUp" style={styles.containerForm}>
-      <TextInput style={styles.textInput1}
-        placeholder="Digite um email..."
-        mode='outlined'
-        label="Email"
-        textColor='white'
-        outlineColor='#fff'
-        activeOutlineColor='#3D3778'
-      />
 
-      <TextInput style={styles.textInput2}
-        placeholder="Digite sua senha..."
-        mode='outlined'
-        label="Senha"
-        textColor='white'
-        outlineColor='#fff'
-        activeOutlineColor='#3D3778'
+      <Controller
+        control={control}
+        name="email"
+        render={({ field: { onChange, onBlur, value } }) => (
+          <TextInput 
+            style={styles.textInput1}
+            placeholder="Digite um email..."
+            onChangeText={onChange}
+            onblur={onBlur}
+            value={value}
+            mode='outlined'
+            label="Email"
+            textColor='white'
+            outlineColor='#fff'
+            activeOutlineColor='#3D3778'
+          />
+        )}
       />
+      {errors.email && <Text style={styles.labelError}>{errors.email?.message}</Text>}
 
-      <TouchableOpacity style={styles.button}>
+      <Controller
+        control={control}
+        name="password"
+        render={({ field: { onChange, onBlur, value } }) => (
+          <TextInput style={styles.textInput2}
+            placeholder="Digite sua senha..."
+            onChangeText={onChange}
+            onblur={onBlur}
+            value={value}
+            mode='outlined'
+            label="Senha"
+            textColor='white'
+            outlineColor='#fff'
+            activeOutlineColor='#3D3778'
+            secureTextEntry={true}
+          />
+        )}
+      />
+      {errors.password && <Text style={styles.labelError} >{errors.password?.message}</Text>}
+
+      <TouchableOpacity 
+        style={styles.button}
+        onPress={handleSubmit(handleSignIn)}
+      >
         <Text style={styles.buttonText}>Acessar</Text>
       </TouchableOpacity>
 
@@ -129,6 +176,11 @@ const styles = StyleSheet.create({
     alignSelf: 'baseline',
     alignItems: 'center'
     
+  },
+  labelError: {
+    alignSelf: 'flex-start',
+    color: '#ff375b',
+    marginBottom: 8
   }
 
 })

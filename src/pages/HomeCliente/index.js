@@ -5,7 +5,7 @@ export default function HomeCliente() {
  return (
    <View styles={styles.container}>
         <View styels={styles.container1}>
-            <Text>Bem vindo</Text>
+            <Text>home do cliente</Text>
         </View>
    </View>
   );
@@ -15,6 +15,9 @@ export default function HomeCliente() {
 const styles = StyleSheet.create({
 
     container: {
+
+    },
+    container1: {
 
     }
 
