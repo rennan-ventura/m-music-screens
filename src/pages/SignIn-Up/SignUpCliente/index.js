@@ -9,10 +9,33 @@ import { TextInput, Button} from 'react-native-paper'
 
 import { useNavigation } from '@react-navigation/native'
 
+import { useForm, Controller } from 'react-hook-form'
+
+import { yupResolver } from '@hookform/resolvers/yup'
+
+import * as yup from 'yup'
+
 import * as Animatable from 'react-native-animatable'
+
+const schema = yup.object({
+  email: yup.string().email("Email Invalido").required("Informe seu email"),
+  password: yup.string().min(6, "A senha deve ter pelo menos 6 digitos").required("Informe sua senha"),
+  name: yup.string().required("digite um nome..."),
+  passwordConfirm: yup.string().required("Confirme a senha..."),
+  dataNasc: yup.string().required("digite a data de nascimento..")
+})
 
 export default function SignUpCliente() {
   const navigation = useNavigation();
+  const { control, handleSubmit, formState: { errors } } = useForm({
+    resolver: yupResolver(schema)
+
+  })
+
+  function handleSignIn(){
+    navigation.navigate('HomeCliente')
+  }
+
  return (
    <View  style={styles.container}>
       
@@ -36,53 +59,106 @@ export default function SignUpCliente() {
     </View>
     <Animatable.View animation="fadeInUp" style={styles.containerForm}>
 
-    <TextInput style={styles.textInput1}
-        placeholder="Digite seu nome..."
-        mode='outlined'
-        label="Nome"
-        textColor='white'
-        outlineColor='#fff'
-        activeOutlineColor='#3D3778'
+    <Controller
+      control={control}
+      name="name"
+      render={({ field: { onChange, onBlur, value } }) => (
+        <TextInput 
+            style={styles.textInput1}
+            placeholder="Digite seu nome..."
+            onChangeText={onChange}
+            onblur={onBlur}
+            value={value}
+            mode='outlined'
+            label="Nome"
+            textColor='white'
+            outlineColor='#fff'
+            activeOutlineColor='#3D3778'
+          />
+        )}
       />
+      {errors.name && <Text style={styles.labelError}>{errors.name?.message}</Text>}
 
-      <TextInput style={styles.textInput1}
-        placeholder="Digite seu email..."
-        mode='outlined'
-        label="Email"
-        textColor='white'
-        outlineColor='#fff'
-        activeOutlineColor='#3D3778'
+    <Controller
+        control={control}
+        name="email"
+        render={({ field: { onChange, onBlur, value } }) => (
+          <TextInput 
+            style={styles.textInput1}
+            placeholder="Digite um email..."
+            onChangeText={onChange}
+            onblur={onBlur}
+            value={value}
+            mode='outlined'
+            label="Email"
+            textColor='white'
+            outlineColor='#fff'
+            activeOutlineColor='#3D3778'
+          />
+        )}
       />
+      {errors.email && <Text style={styles.labelError}>{errors.email?.message}</Text>}
 
-      <TextInput style={styles.textInput1}
-        placeholder="Digite uma senha..."
-        mode='outlined'
-        label="Senha"
-        textColor='white'
-        outlineColor='#fff'
-        activeOutlineColor='#3D3778'
+      <Controller
+        control={control}
+        name="password"
+        render={({ field: { onChange, onBlur, value } }) => (
+          <TextInput style={styles.textInput1}
+            placeholder="Digite uma senha..."
+            onChangeText={onChange}
+            onblur={onBlur}
+            value={value}
+            mode='outlined'
+            label="Senha"
+            textColor='white'
+            outlineColor='#fff'
+            activeOutlineColor='#3D3778'
+          />
+        )}
       />
+      {errors.password && <Text style={styles.labelError}>{errors.password?.message}</Text>}
 
-      <TextInput style={styles.textInput1}
-        placeholder="Confirme sua senha..."
-        mode='outlined'
-        label="Confirmar senha"
-        textColor='white'
-        outlineColor='#fff'
-        activeOutlineColor='#3D3778'
+      <Controller
+        control={control}
+        name="passwordConfirm"
+        render={({ field: { onChange, onBlur, value } }) => (
+          <TextInput style={styles.textInput1}
+            placeholder="Confirme sua senha..."
+            onChangeText={onChange}
+            onblur={onBlur}
+            value={value}
+            mode='outlined'
+            label="Confirmar senha"
+            textColor='white'
+            outlineColor='#fff'
+            activeOutlineColor='#3D3778'
+          />
+        )}
       />
+      {errors.passwordConfirm && <Text style={styles.labelError}>{errors.passwordConfirm?.message}</Text>}
 
-      <TextInput style={styles.textInput1}
-        placeholder="Digite sua data de nascimento..."
-        mode='outlined'
-        label="Data de nascimento"
-        textColor='white'
-        outlineColor='#fff'
-        activeOutlineColor='#3D3778'
+      <Controller
+        control={control}
+        name="dataNasc"
+        render={({ field: { onChange, onBlur, value } }) => (
+          <TextInput style={styles.textInput1}
+            placeholder="Digite sua data de nascimento..."
+            onChangeText={onChange}
+            onblur={onBlur}
+            value={value}
+            mode='outlined'
+            label="Data de nascimento"
+            textColor='white'
+            outlineColor='#fff'
+            activeOutlineColor='#3D3778'
+          />
+        )}
       />
+      {errors.dataNasc && <Text style={styles.labelError}>{errors.dataNasc?.message}</Text>}
+
 
       <TouchableOpacity style={styles.button}
-                        onPress={() => navigation.navigate('HomeCliente')}>
+                        onPress={handleSubmit(handleSignIn)}>
         <Text style={styles.buttonText} >Acessar</Text>
       </TouchableOpacity>
 
@@ -158,6 +234,11 @@ const styles = StyleSheet.create({
   },
   containerWelcome: {
     height: 60,
+  },
+  labelError: {
+    alignSelf: 'flex-start',
+    color: '#ff375b',
+    marginBottom: 8
   }
 
 })
