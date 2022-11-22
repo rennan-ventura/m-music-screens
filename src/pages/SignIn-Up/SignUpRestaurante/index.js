@@ -233,6 +233,6 @@ const styles = StyleSheet.create({
   labelError: {
     alignSelf: 'flex-start',
     color: '#ff375b',
-    marginBottom: 8
+    marginBottom: 5,
   }
 })
