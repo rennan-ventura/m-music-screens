@@ -58,7 +58,7 @@ export default function HomeMusico() {
       {
         shouldShow && (
           <QRCode
-            value={qrValue ? qrValue : 'www.google.com'}
+            value={qrValue ? qrValue : 'http://www.google.com'}
             size={250}
             color="white"
             backgroundColor='transparent'

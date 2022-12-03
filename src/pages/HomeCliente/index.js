@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import { View, 
   Text, 
   StyleSheet, 
-  TouchableOpacity, 
+  TouchableOpacity,
+  Modal 
   } from 'react-native'
 import { TextInput, Button} from 'react-native-paper'
 
@@ -10,11 +11,21 @@ import { useNavigation } from '@react-navigation/native'
 
 import * as Animatable from 'react-native-animatable'
 
-import QRCodeScanner from 'react-native-qrcode-scanner'
+import Scanner from '../../components/Scanner'
+import { StatusBar } from 'expo-status-bar';
+
 
 export default function HomeCliente() {
+  const [modalVisible, setModalVisible] = useState(false);
   const [qrCodeContent, setQrCodeContent] = useState("");
   const navigation = useNavigation();
+
+  const onCodeScanned = (data) => {
+      setQrCodeContent(data);
+      setModalVisible(false);
+      navigation.navigate('PedidoForms')
+  }
+
  return (
   <View  style={styles.container}>
       
@@ -39,10 +50,32 @@ export default function HomeCliente() {
   <Animatable.View animation="fadeInUp" style={styles.containerForm}>
 
     <TouchableOpacity style={styles.button}
-                      onPress={() => navigation.navigate('HomeCliente')}>
+                      onPress={() => setModalVisible(true)}>
       <Text style={styles.buttonText} >Escanear QrCode
       </Text>
     </TouchableOpacity>
+
+    <Text style={styles.buttonText}>{qrCodeContent}</Text>
+
+    <Modal
+      visible={modalVisible}
+      transparent={true}
+      animationType="fade"
+      onRequestClose={() => setModalVisible(false)}
+    >
+      <View style={styles.modal}>
+        <Scanner onCodeScanned={onCodeScanned} />
+        <TouchableOpacity 
+          style={styles.buttonModal}
+          onPress={() => setModalVisible(false)}
+          >
+            <Text style={styles.buttonText}>Fechar</Text>
+        </TouchableOpacity> 
+      </View>
+    </Modal>
+
+    <StatusBar style='auto'/>
+
   
 
 
@@ -92,18 +125,6 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: 'bold'
   },
-  buttonRegister:{
-    marginTop: 14,
-    alignSelf: 'center'
-  },
-  textInput1: {
-    marginTop: 20,
-    backgroundColor: '#1f1f1f',
-  },
-  containerBack: {
-    flex: 1,
-    resizeMode: "cover"
-  },
   buttonVoltar:{
     alignSelf: 'baseline',
     alignItems: 'center',
@@ -118,6 +139,12 @@ const styles = StyleSheet.create({
   },
   containerWelcome: {
     height: 60,
+  },
+  modal: {
+    flex: 1, 
+    alignItems: 'center',
+    justifyContent: 'space-around',
+    backgroundColor: "#1f1f1f",
   }
 
 

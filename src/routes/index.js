@@ -9,6 +9,7 @@ import SignUpRestaurante from '../pages/SignIn-Up/SignUpRestaurante'
 import HomeCliente from '../pages/HomeCliente'
 import HomeMusico from '../pages/HomeMusico'
 import HomeEstabelecimento from '../pages/HomeEstabelecimento'
+import PedidoForms from '../pages/PedidoForms'
 import { ScreenStackHeaderLeftView } from 'react-native-screens'
 
 
@@ -68,6 +69,12 @@ export default function Routes(){
             <Stack.Screen
             name='HomeEstabelecimento'
             component={HomeEstabelecimento}
+            options={{headerShown: false}}
+            />
+
+            <Stack.Screen
+            name='PedidoForms'
+            component={PedidoForms}
             options={{headerShown: false}}
             />
         </Stack.Navigator>
