@@ -10,7 +10,6 @@ import { TextInput, Button, RadioButton, Checkbox } from 'react-native-paper'
 import * as Animatable from 'react-native-animatable'
 
 import { useNavigation } from '@react-navigation/native'
-import { RadioButtonLabel } from 'react-native-simple-radio-button';
 
 
 
@@ -66,14 +65,6 @@ export default function WhoYA() {
         onPress={() => setChecked('musico')}
         color='#FFB052'
       />
-      <RadioButton.Item
-      style={styles.radioButton3}
-        label='Restaurante'
-        value="restaurante"
-        status={ checked === 'restaurante' ? 'checked' : 'unchecked' }
-        onPress={() => setChecked('restaurante')}
-        color='#3D3778'
-      />
 
       </Animatable.View>
       
@@ -81,7 +72,6 @@ export default function WhoYA() {
         style={styles.button}
         onPress={ () => checked === 'cliente' ? navigation.navigate('SignUpCliente') : 
         checked === 'musico' ? navigation.navigate('SignUpMusico') : 
-        checked === 'restaurante' ? navigation.navigate('SignUpRestaurante') : 
         alert("Por favor selecione uma das opções")} >
           <Text style={styles.buttonText}>Acessar</Text>
         </TouchableOpacity>

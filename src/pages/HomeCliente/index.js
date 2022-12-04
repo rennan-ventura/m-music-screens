@@ -11,19 +11,23 @@ import { useNavigation } from '@react-navigation/native'
 
 import * as Animatable from 'react-native-animatable'
 
+import { useDispatch } from 'react-redux'
+
 import Scanner from '../../components/Scanner'
 import { StatusBar } from 'expo-status-bar';
 
 
 export default function HomeCliente() {
+  const dispatch = useDispatch()
   const [modalVisible, setModalVisible] = useState(false);
   const [qrCodeContent, setQrCodeContent] = useState("");
   const navigation = useNavigation();
 
   const onCodeScanned = (data) => {
-      setQrCodeContent(data);
+      setQrCodeContent(data); 
       setModalVisible(false);
-      navigation.navigate('PedidoForms')
+      navigation.navigate('PedidoForms');
+      dispatch({ type: 'CHANGE', value: data })
   }
 
  return (
@@ -44,7 +48,7 @@ export default function HomeCliente() {
   </View>
   <View style={styles.containerWelcome}>
 
-    <Animatable.Text style={styles.textoWelcome} animation="fadeInLeft" >Começe a solicitar</Animatable.Text>
+    <Animatable.Text style={styles.textoWelcome} animation="fadeInLeft" >Começe a solicitar: </Animatable.Text>
 
   </View>
   <Animatable.View animation="fadeInUp" style={styles.containerForm}>
@@ -104,7 +108,7 @@ const styles = StyleSheet.create({
   },
   containerForm:{
     backgroundColor: 'transparent',
-    flex: 5,
+    flex: 3,
     borderTopLeftRadius: 25,
     borderTopRightRadius: 25,
     paddingStart: '5%',
@@ -128,14 +132,14 @@ const styles = StyleSheet.create({
   buttonVoltar:{
     alignSelf: 'baseline',
     alignItems: 'center',
-    marginTop: 5,
+    marginTop: 35,
   },
   textoWelcome: {
     fontSize: 25,
     color: 'white',
     marginTop: 20,
-    marginLeft: 20,
-    fontWeight: 'bold'
+    fontWeight: 'bold',
+    alignSelf: 'center'
   },
   containerWelcome: {
     height: 60,
@@ -145,6 +149,16 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-around',
     backgroundColor: "#1f1f1f",
+  },
+  buttonModal: {
+    backgroundColor: '#3D3778',
+    width: '80%',
+    borderRadius: 15,
+    paddingVertical: 10,
+    marginBottom: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
+    alignSelf: 'center',
   }
 
 

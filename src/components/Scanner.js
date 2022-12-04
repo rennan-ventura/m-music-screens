@@ -15,7 +15,7 @@ export default function Scanner(props) {
         getBarCodeScannerPermissions();
     }, []);
 
-    const handleBarCodeScanned = ({type, data}) => {
+    const handleBarCodeScanned = ({data}) => {
         setScanned(true);
         props.onCodeScanned(data);
     };
@@ -32,7 +32,7 @@ export default function Scanner(props) {
                 width: '100%',
                 height: '90%',
                 flexDirection: 'column',
-                justifyContent: 'flex-end'
+                justifyContent: 'flex-end',
             }}
         
         >

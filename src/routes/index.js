@@ -5,10 +5,8 @@ import SignIn from '../pages/SignIn-Up/SignIn'
 import WhoYA from '../pages/WhoYA'
 import SignUpCliente from '../pages/SignIn-Up/SignUpCliente'
 import SignUpMusico from '../pages/SignIn-Up/SignUpMusico'
-import SignUpRestaurante from '../pages/SignIn-Up/SignUpRestaurante'
 import HomeCliente from '../pages/HomeCliente'
 import HomeMusico from '../pages/HomeMusico'
-import HomeEstabelecimento from '../pages/HomeEstabelecimento'
 import PedidoForms from '../pages/PedidoForms'
 import { ScreenStackHeaderLeftView } from 'react-native-screens'
 
@@ -49,12 +47,6 @@ export default function Routes(){
             />
 
             <Stack.Screen
-            name='SignUpRestaurante'
-            component={SignUpRestaurante}
-            options={{headerShown: false}} 
-            />
-
-            <Stack.Screen
             name='HomeCliente'
             component={HomeCliente}
             options={{headerShown: false}}
@@ -63,12 +55,6 @@ export default function Routes(){
             <Stack.Screen
             name='HomeMusico'
             component={HomeMusico}
-            options={{headerShown: false}}
-            />
-
-            <Stack.Screen
-            name='HomeEstabelecimento'
-            component={HomeEstabelecimento}
             options={{headerShown: false}}
             />
 

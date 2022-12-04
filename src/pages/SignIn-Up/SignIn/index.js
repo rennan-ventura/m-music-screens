@@ -71,6 +71,9 @@ export default function SignIn() {
             textColor='white'
             outlineColor='#fff'
             activeOutlineColor='#3D3778'
+            underlineColor='#fff'
+            placeholderTextColor="white"
+            activeUnderlineColor='white'
           />
         )}
       />
@@ -91,6 +94,8 @@ export default function SignIn() {
             outlineColor='#fff'
             activeOutlineColor='#3D3778'
             secureTextEntry={true}
+            placeholderTextColor="white"
+            
           />
         )}
       />

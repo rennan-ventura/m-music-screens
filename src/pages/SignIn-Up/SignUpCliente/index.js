@@ -59,6 +59,7 @@ export default function SignUpCliente() {
     </View>
     <Animatable.View animation="fadeInUp" style={styles.containerForm}>
 
+
     <Controller
       control={control}
       name="name"
@@ -74,6 +75,7 @@ export default function SignUpCliente() {
             textColor='white'
             outlineColor='#fff'
             activeOutlineColor='#3D3778'
+            placeholderTextColor='white'
           />
         )}
       />
@@ -94,8 +96,10 @@ export default function SignUpCliente() {
             textColor='white'
             outlineColor='#fff'
             activeOutlineColor='#3D3778'
+            placeholderTextColor='white'
           />
         )}
+
       />
       {errors.email && <Text style={styles.labelError}>{errors.email?.message}</Text>}
 
@@ -113,6 +117,7 @@ export default function SignUpCliente() {
             textColor='white'
             outlineColor='#fff'
             activeOutlineColor='#3D3778'
+            placeholderTextColor='white'
           />
         )}
       />
@@ -132,29 +137,11 @@ export default function SignUpCliente() {
             textColor='white'
             outlineColor='#fff'
             activeOutlineColor='#3D3778'
+            placeholderTextColor='white'
           />
         )}
       />
       {errors.passwordConfirm && <Text style={styles.labelError}>{errors.passwordConfirm?.message}</Text>}
-
-      <Controller
-        control={control}
-        name="dataNasc"
-        render={({ field: { onChange, onBlur, value } }) => (
-          <TextInput style={styles.textInput1}
-            placeholder="Digite sua data de nascimento..."
-            onChangeText={onChange}
-            onblur={onBlur}
-            value={value}
-            mode='outlined'
-            label="Data de nascimento"
-            textColor='white'
-            outlineColor='#fff'
-            activeOutlineColor='#3D3778'
-          />
-        )}
-      />
-      {errors.dataNasc && <Text style={styles.labelError}>{errors.dataNasc?.message}</Text>}
 
 
       <TouchableOpacity style={styles.button}

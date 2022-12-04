@@ -55,6 +55,7 @@ export default function SignUpMusico() {
     </View>
     <Animatable.View animation="fadeInUp" style={styles.containerForm}>
 
+
     <Controller
       control={control}
       name="name"
@@ -70,6 +71,7 @@ export default function SignUpMusico() {
             textColor='white'
             outlineColor='#fff'
             activeOutlineColor='#3D3778'
+            placeholderTextColor='white'
           />
         )}
       />
@@ -90,6 +92,7 @@ export default function SignUpMusico() {
             textColor='white'
             outlineColor='#fff'
             activeOutlineColor='#3D3778'
+            placeholderTextColor='white'
           />
         )}
       />
@@ -109,6 +112,7 @@ export default function SignUpMusico() {
             textColor='white'
             outlineColor='#fff'
             activeOutlineColor='#3D3778'
+            placeholderTextColor='white'
           />
         )}
       />
@@ -128,6 +132,7 @@ export default function SignUpMusico() {
             textColor='white'
             outlineColor='#fff'
             activeOutlineColor='#3D3778'
+            placeholderTextColor='white'
           />
         )}
       />

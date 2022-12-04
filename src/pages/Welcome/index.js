@@ -5,7 +5,8 @@ import {
   Text,
   StyleSheet,
   Image,
-  TouchableOpacity
+  TouchableOpacity,
+  
 } from 'react-native';
 
 import * as Animatable from 'react-native-animatable'
