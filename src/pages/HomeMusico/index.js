@@ -14,10 +14,15 @@ import QRCode  from 'react-native-qrcode-svg'
  
 export default function HomeMusico() {
   const [shouldShow, setShouldShow] = useState(false)
+  const [shouldShowButtom, setShouldShowButtom] = useState(false)
   const [qrValue, setQrValue] = useState('')
   const navigation = useNavigation();
 
 
+  function handleVisibility(){
+    setShouldShow(true);
+    setShouldShowButtom(true);
+  }
 
  return (
   <View  style={styles.container}>
@@ -43,14 +48,8 @@ export default function HomeMusico() {
   <Animatable.View animation="fadeInUp" style={styles.containerForm}>
 
     <TouchableOpacity style={styles.button}
-                      onPress={() => setShouldShow(true)}>
+                      onPress={handleVisibility}>
       <Text style={styles.buttonText} >Gerar QrCode
-      </Text>
-    </TouchableOpacity>
-
-    <TouchableOpacity style={styles.button}
-                      onPress={() => navigation.navigate('')}>
-      <Text style={styles.buttonText} >Escanear QrCode
       </Text>
     </TouchableOpacity>
     <View style={styles.qrcode}>
@@ -68,7 +67,16 @@ export default function HomeMusico() {
             logoBackgroundColor="transparent"
           />
         )
-
+      }
+      {
+        shouldShowButtom && (
+          <TouchableOpacity 
+            style={styles.buttonPedido}
+            onPress={() => navigation.navigate('ListaPedido')}
+          >
+                <Text style={styles.buttonText} >Ver pedidos</Text>
+          </TouchableOpacity>
+        )
       }
     
 
@@ -136,11 +144,22 @@ const styles = StyleSheet.create({
   },
   containerWelcome: {
     height: 60,
+    alignItems: 'center'
   },
   qrcode: {
     marginTop: 70,
     alignSelf: 'center'
-  }
+  },
+  buttonPedido:{
+    backgroundColor: '#3D3778',
+    width: 200,
+    borderRadius: 15,
+    paddingVertical: 10,
+    marginTop: 30,
+    justifyContent: 'center',
+    alignItems: 'center',
+    alignSelf: 'center',
+  },
 
 
 })

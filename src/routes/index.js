@@ -8,6 +8,7 @@ import SignUpMusico from '../pages/SignIn-Up/SignUpMusico'
 import HomeCliente from '../pages/HomeCliente'
 import HomeMusico from '../pages/HomeMusico'
 import PedidoForms from '../pages/PedidoForms'
+import ListaPedido from '../pages/ListaPedido'
 import { ScreenStackHeaderLeftView } from 'react-native-screens'
 
 
@@ -17,51 +18,57 @@ export default function Routes(){
     return(
         <Stack.Navigator>
             <Stack.Screen
-            name='Welcome'
-            component={Welcome}
-            options={{headerShown: false}}
+                name='Welcome'
+                component={Welcome}
+                options={{headerShown: false}}
             />
 
             <Stack.Screen
-            name='SignIn'
-            component={SignIn}
-            options={{headerShown: false}}
+                name='SignIn'
+                component={SignIn}
+                options={{headerShown: false}}
             />
 
             <Stack.Screen
-            name='WhoYA'
-            component={WhoYA}
-            options={{headerShown: false}} 
+                name='WhoYA'
+                component={WhoYA}
+                options={{headerShown: false}} 
             />
 
             <Stack.Screen
-            name='SignUpCliente'
-            component={SignUpCliente}
-            options={{headerShown: false}} 
+                name='SignUpCliente'
+                component={SignUpCliente}
+                options={{headerShown: false}} 
             />
 
             <Stack.Screen
-            name='SignUpMusico'
-            component={SignUpMusico}
-            options={{headerShown: false}} 
+                name='SignUpMusico'
+                component={SignUpMusico}
+                options={{headerShown: false}} 
             />
 
             <Stack.Screen
-            name='HomeCliente'
-            component={HomeCliente}
-            options={{headerShown: false}}
+                name='HomeCliente'
+                component={HomeCliente}
+                options={{headerShown: false}}
             />
 
             <Stack.Screen
-            name='HomeMusico'
-            component={HomeMusico}
-            options={{headerShown: false}}
+                name='HomeMusico'
+                component={HomeMusico}
+                options={{headerShown: false}}
             />
 
             <Stack.Screen
-            name='PedidoForms'
-            component={PedidoForms}
-            options={{headerShown: false}}
+                name='PedidoForms'
+                component={PedidoForms}
+                options={{headerShown: false}}
+            />
+
+            <Stack.Screen
+                name='ListaPedido'
+                component={ListaPedido}
+                options={{headerShown: false}}
             />
         </Stack.Navigator>
     );

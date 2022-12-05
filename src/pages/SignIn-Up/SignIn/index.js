@@ -31,7 +31,7 @@ export default function SignIn() {
   })
 
   function handleSignIn(){
-    navigation.navigate('HomeCliente')
+    navigation.navigate('HomeMusico')
   }
 
  return (
