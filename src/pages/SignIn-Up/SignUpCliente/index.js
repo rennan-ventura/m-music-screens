@@ -1,11 +1,11 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { View, 
   Text, 
   StyleSheet, 
-  TouchableOpacity, 
+  TouchableOpacity,
   } from 'react-native'
-import { TextInput, Button} from 'react-native-paper'
+import { TextInput, Button, ActivityIndicator } from 'react-native-paper'
 
 import { useNavigation } from '@react-navigation/native'
 
@@ -17,23 +17,44 @@ import * as yup from 'yup'
 
 import * as Animatable from 'react-native-animatable'
 
+import { useSelector } from 'react-redux'
+import userService from '../../../service/UserService';
+
 const schema = yup.object({
   email: yup.string().email("Email Invalido").required("Informe seu email"),
   password: yup.string().min(6, "A senha deve ter pelo menos 6 digitos").required("Informe sua senha"),
-  name: yup.string().required("digite um nome..."),
+  username: yup.string().required("digite um nome..."),
   passwordConfirm: yup.string().required("Confirme a senha..."),
-  dataNasc: yup.string().required("digite a data de nascimento..")
 })
 
 export default function SignUpCliente() {
+  const status = useSelector( state => state.statusContent )
   const navigation = useNavigation();
   const { control, handleSubmit, formState: { errors } } = useForm({
     resolver: yupResolver(schema)
-
   })
+  const [isLoading, setLoading] = useState(false)
 
-  function handleSignIn(){
-    navigation.navigate('HomeCliente')
+  function handleSignUp(data){
+    setLoading(true);
+    let userData = {
+      username: data.username,
+      email: data.email,
+      password: data.password,
+      status: status
+    }
+    userService.signup(userData)
+    .then((response) => {
+      setLoading(false);
+      console.log(response.data)
+      navigation.navigate('SignIn')
+    })
+    .catch((error) => {
+      setLoading(false);
+      console.log(error)
+      console.log("deu erro")
+    }) 
+    console.log(userData)
   }
 
  return (
@@ -62,24 +83,24 @@ export default function SignUpCliente() {
 
     <Controller
       control={control}
-      name="name"
+      name="username"
       render={({ field: { onChange, onBlur, value } }) => (
         <TextInput 
             style={styles.textInput1}
-            placeholder="Digite seu nome..."
+            placeholder="Digite um username..."
             onChangeText={onChange}
             onblur={onBlur}
             value={value}
             mode='outlined'
-            label="Nome"
+            label="Username"
             textColor='white'
             outlineColor='#fff'
-            activeOutlineColor='#3D3778'
+            activeOutlineColor='#3597A6'
             placeholderTextColor='white'
           />
         )}
       />
-      {errors.name && <Text style={styles.labelError}>{errors.name?.message}</Text>}
+      {errors.username && <Text style={styles.labelError}>{errors.username?.message}</Text>}
 
     <Controller
         control={control}
@@ -95,7 +116,7 @@ export default function SignUpCliente() {
             label="Email"
             textColor='white'
             outlineColor='#fff'
-            activeOutlineColor='#3D3778'
+            activeOutlineColor='#3597A6'
             placeholderTextColor='white'
           />
         )}
@@ -116,7 +137,7 @@ export default function SignUpCliente() {
             label="Senha"
             textColor='white'
             outlineColor='#fff'
-            activeOutlineColor='#3D3778'
+            activeOutlineColor='#3597A6'
             placeholderTextColor='white'
           />
         )}
@@ -136,7 +157,7 @@ export default function SignUpCliente() {
             label="Confirmar senha"
             textColor='white'
             outlineColor='#fff'
-            activeOutlineColor='#3D3778'
+            activeOutlineColor='#3597A6'
             placeholderTextColor='white'
           />
         )}
@@ -144,11 +165,21 @@ export default function SignUpCliente() {
       {errors.passwordConfirm && <Text style={styles.labelError}>{errors.passwordConfirm?.message}</Text>}
 
 
-      <TouchableOpacity style={styles.button}
-                        onPress={handleSubmit(handleSignIn)}>
-        <Text style={styles.buttonText} >Acessar</Text>
-      </TouchableOpacity>
+      { isLoading && 
+        <ActivityIndicator 
+        animating={true} 
+        color={'#3D3778'} 
+        style={styles.activityInd}
+        size={'large'}
+        />
+      }
 
+      { !isLoading &&
+        <TouchableOpacity style={styles.button}
+                          onPress={handleSubmit(handleSignUp)}>
+          <Text style={styles.buttonText} >Acessar</Text>
+        </TouchableOpacity>
+      }
 
     </Animatable.View>
    </View>  
@@ -181,7 +212,7 @@ const styles = StyleSheet.create({
     paddingEnd: '5%'
   },
   button:{
-    backgroundColor: '#3D3778',
+    backgroundColor: '#3597A6',
     width: '60%',
     borderRadius: 20,
     paddingVertical: 8,
@@ -200,7 +231,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center'
   },
   textInput1: {
-    marginTop: 20,
+    marginTop: 25,
     backgroundColor: '#1f1f1f',
   },
   containerBack: {
@@ -226,6 +257,8 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-start',
     color: '#ff375b',
     marginBottom: 8
+  },
+  activityInd: {
+    marginTop: 10
   }
-
-})
+});

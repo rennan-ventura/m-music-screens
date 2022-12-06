@@ -1,23 +1,58 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   View, 
   Text, 
   StyleSheet, 
   TouchableOpacity,
-  Modal,
   } from 'react-native'
-import { TextInput, Button } from 'react-native-paper'
+import { TextInput, Button, ActivityIndicator } from 'react-native-paper'
 
 import { useNavigation } from '@react-navigation/native'
 
 import * as Animatable from 'react-native-animatable'
 
 import { useSelector } from 'react-redux'
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import userService from '../../service/UserService';
 
 export default function PedidoForms(props) {
   const codeContent = useSelector( state => state.codeContent )
   const navigation = useNavigation();
+  const [music, setMusic] = useState('');
+  const [author, setAuthor] = useState('');
+  const [isLoading, setLoading] = useState(false);
+  const [idRequester, setIdRequester] = useState('');
   
+  function handleOrder(){
+    setLoading(true);
+    let userData = {
+      attendant: codeContent,
+      requester: idRequester,
+      description: `${music} - ${author}`
+    }
+    userService.postOrder(userData)
+    .then((response) => {
+      setLoading(false);
+      setMusic('');
+      setAuthor('');
+      console.log(response.data)
+
+    })
+    .catch((error) => {
+      setLoading(false);
+      console.log(error)
+      console.log("falha ao fazer pedido")
+    }) 
+    console.log(userData)
+  }
+
+  useEffect(() => {
+    AsyncStorage.getItem("MMUSIC-UUID").then((id) => {
+      setIdRequester(id)
+    }).catch((error) => {
+      console.log(error)
+    })
+  }, [])
 
  return (
   <View  style={styles.container}>
@@ -47,6 +82,8 @@ export default function PedidoForms(props) {
       <TextInput style={styles.textInput1}
         placeholder="Digite o nome da musica..."
         mode='outlined'
+        onChangeText={setMusic}
+        value={music}
         label="Musica"
         textColor='white'
         outlineColor='#fff'
@@ -57,6 +94,8 @@ export default function PedidoForms(props) {
       <TextInput style={styles.textInput1}
         placeholder="Digite o autor da musica..."
         mode='outlined'
+        onChangeText={setAuthor}
+        value={author}
         label="Autor"
         textColor='white'
         outlineColor='#fff'
@@ -64,16 +103,22 @@ export default function PedidoForms(props) {
         placeholderTextColor='white'
       />
 
+    { isLoading && 
+          <ActivityIndicator
+          animating={true} 
+          color={'#3D3778'} 
+          style={styles.activityInd}
+          size={'large'}
+          />
+    }
 
-    <TouchableOpacity style={styles.button}
-                      onPress={() => setModalVisible(true)}>
-      <Text style={styles.buttonText} >Fazer pedido
-      </Text>
-    </TouchableOpacity>
-
-    <Text>{codeContent}</Text>
+    { !isLoading &&
+      <TouchableOpacity style={styles.button}
+                        onPress={handleOrder}>
+        <Text style={styles.buttonText} >Fazer pedido</Text>
+      </TouchableOpacity>
+    }
   
-
   </Animatable.View>
  </View> 
   );

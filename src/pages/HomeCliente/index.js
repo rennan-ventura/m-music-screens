@@ -3,7 +3,7 @@ import { View,
   Text, 
   StyleSheet, 
   TouchableOpacity,
-  Modal 
+  Modal,
   } from 'react-native'
 import { TextInput, Button} from 'react-native-paper'
 
@@ -15,10 +15,11 @@ import { useDispatch } from 'react-redux'
 
 import Scanner from '../../components/Scanner'
 import { StatusBar } from 'expo-status-bar';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 export default function HomeCliente() {
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const [modalVisible, setModalVisible] = useState(false);
   const [qrCodeContent, setQrCodeContent] = useState("");
   const navigation = useNavigation();
@@ -27,16 +28,23 @@ export default function HomeCliente() {
       setQrCodeContent(data); 
       setModalVisible(false);
       navigation.navigate('PedidoForms');
-      dispatch({ type: 'CHANGE', value: data })
+      dispatch({ type: 'CHANGEQR', value: data });
+  }
+  function handlerSignOut(){
+    AsyncStorage.removeItem("MMUSIC-TOKEN");
+    AsyncStorage.removeItem("MMUSIC-TOKENTYPE");
+    AsyncStorage.removeItem("MMUSIC-UUID");
+    AsyncStorage.removeItem("MMUSIC-USERNAME");
+    navigation.navigate('Welcome');
   }
 
  return (
   <View  style={styles.container}>
       
   <View style={styles.containerLogo}>
-  <Button icon="arrow-u-left-top"
+  <Button icon="logout"
    style={styles.buttonVoltar}
-   onPress={ () => navigation.navigate('WhoYA')}/>
+   onPress={handlerSignOut}/>
   <Animatable.Image
         animation="fadeIn"
         source={require('../../assets/logo.png')} 
@@ -58,8 +66,6 @@ export default function HomeCliente() {
       <Text style={styles.buttonText} >Escanear QrCode
       </Text>
     </TouchableOpacity>
-
-    <Text style={styles.buttonText}>{qrCodeContent}</Text>
 
     <Modal
       visible={modalVisible}

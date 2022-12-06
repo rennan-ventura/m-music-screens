@@ -1,11 +1,12 @@
 
-import React, {useState} from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, 
   Text, 
   StyleSheet, 
   TouchableOpacity, 
-  ImageBackground} from 'react-native'
-import { TextInput, Button} from 'react-native-paper'
+  ImageBackground,
+  Alert } from 'react-native'
+import { TextInput, Button, ActivityIndicator} from 'react-native-paper'
 
 import { useForm, Controller } from 'react-hook-form'
 
@@ -17,112 +18,179 @@ import { useNavigation } from '@react-navigation/native'
 
 import * as Animatable from 'react-native-animatable'
 
-const schema = yup.object({
-  email: yup.string().email("Email Invalido").required("Informe seu email"),
-  password: yup.string().min(6, "A senha deve ter pelo menos 6 digitos").required("Informe sua senha")
-})
+import userService from '../../../service/UserService';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
+const schema = yup.object({
+  username: yup.string().min(4, "O username deve ter pelo menos 4 digitos").required("Informe seu username..."),
+  password: yup.string().min(6, "A senha deve ter pelo menos 6 digitos").required("Informe sua senha")
+});
 
 export default function SignIn() {
   const navigation = useNavigation();
   const { control, handleSubmit, formState: { errors } } = useForm({
     resolver: yupResolver(schema)
+  });
+  const [isLoading, setLoading] = useState(false)
+ // const [isLoadingToken, setLoadingToken] = useState(false)
 
-  })
+  function handleSignIn(data){
+    setLoading(true);
+    let userData = {
+      username: data.username,
+      password: data.password
+    }
+    userService.signin(userData)
+    .then((response) => {
+      setLoading(false);
+      console.log(response.data)
+      if(response.data.status === 'REQUESTER')
+      {
+      navigation.navigate('HomeCliente')
+      }
+      if(response.data.status === 'ATTENDANT')
+      {
+      navigation.navigate('HomeMusico')
+      }
 
-  function handleSignIn(){
-    navigation.navigate('HomeMusico')
+    })
+    .catch((error) => {
+      setLoading(false);
+      console.log(error)
+      console.log("O usuario nao existe")
+      Alert.alert("O Usuario não existe")
+    }) 
+    console.log(userData)
   }
+  
+  /*
+  function SignInWithToken(token){
+    setLoadingToken(true);
+    let userData = {
+      token: token,
+    }
+    userService.signinWithToken(userData)
+    .then((response) => {
+      setLoadingToken(false);
+      console.log(response.data)
+      if(response.data.status === 'REQUESTER')
+      {
+      navigation.navigate('HomeCliente')
+      }
+      if(response.data.status === 'ATTENDANT')
+      {
+      navigation.navigate('HomeMusico')
+      }
 
- return (
+    })
+    .catch((error) => {
+      setLoadingToken(false);
+    }) 
+    console.log(userData)
+  }*/
+
+  useEffect(() => {
+    AsyncStorage.getItem("MMUSIC-TOKEN").then((token) => {
+      console.log(token)
+    })
+  }, []) 
+
+  return (
    <View  style={styles.container}>
     <ImageBackground
       source={require('../../../assets/fundo.png')}
       style={styles.containerBack}
     >
       
-    <View style={styles.containerLogo}>
-    <Button icon="arrow-u-left-top"
-     style={styles.buttonVoltar}
-     onPress={ () => navigation.navigate('Welcome')}/>
-    <Animatable.Image
-          animation="fadeIn"
-          source={require('../../../assets/Logo3.png')}
-          style={{ width: '100%' }}
-          resizeMode='contain'
-          alignSelf='center'
+      <View style={styles.containerLogo}>
+      <Button icon="arrow-u-left-top"
+      style={styles.buttonVoltar}
+      onPress={ () => navigation.navigate('Welcome')}/>
+      <Animatable.Image
+            animation="fadeIn"
+            source={require('../../../assets/Logo3.png')}
+            style={{ width: '100%' }}
+            resizeMode='contain'
+            alignSelf='center'
+          />
+      </View>
+
+      <Animatable.View animation="fadeInUp" style={styles.containerForm}>
+
+        <Controller
+          control={control}
+          name="username"
+          render={({ field: { onChange, onBlur, value } }) => (
+            <TextInput 
+              style={styles.textInput1}
+              placeholder="Digite seu username..."
+              onChangeText={onChange}
+              onblur={onBlur}
+              value={value}
+              mode='outlined'
+              label="Username"
+              textColor='white'
+              outlineColor='#fff'
+              activeOutlineColor='#3D3778'
+              underlineColor='#fff'
+              placeholderTextColor="white"
+              activeUnderlineColor='white'
+            />
+          )}
         />
-    </View>
+        {errors.username && <Text style={styles.labelError}>{errors.username?.message}</Text>}
 
-    <Animatable.View animation="fadeInUp" style={styles.containerForm}>
+        <Controller
+          control={control}
+          name="password"
+          render={({ field: { onChange, onBlur, value } }) => (
+            <TextInput style={styles.textInput2}
+              placeholder="Digite sua senha..."
+              onChangeText={onChange}
+              onblur={onBlur}
+              value={value}
+              mode='outlined'
+              label="Senha"
+              textColor='white'
+              outlineColor='#fff'
+              activeOutlineColor='#3D3778'
+              secureTextEntry={true}
+              placeholderTextColor="white"
+              
+            />
+          )}
+        />
+        {errors.password && <Text style={styles.labelError} >{errors.password?.message}</Text>}
 
-      <Controller
-        control={control}
-        name="email"
-        render={({ field: { onChange, onBlur, value } }) => (
-          <TextInput 
-            style={styles.textInput1}
-            placeholder="Digite um email..."
-            onChangeText={onChange}
-            onblur={onBlur}
-            value={value}
-            mode='outlined'
-            label="Email"
-            textColor='white'
-            outlineColor='#fff'
-            activeOutlineColor='#3D3778'
-            underlineColor='#fff'
-            placeholderTextColor="white"
-            activeUnderlineColor='white'
+        { isLoading && 
+          <ActivityIndicator
+          animating={true} 
+          color={'#3D3778'} 
+          style={styles.activityInd}
+          size={'large'}
           />
-        )}
-      />
-      {errors.email && <Text style={styles.labelError}>{errors.email?.message}</Text>}
+        }
 
-      <Controller
-        control={control}
-        name="password"
-        render={({ field: { onChange, onBlur, value } }) => (
-          <TextInput style={styles.textInput2}
-            placeholder="Digite sua senha..."
-            onChangeText={onChange}
-            onblur={onBlur}
-            value={value}
-            mode='outlined'
-            label="Senha"
-            textColor='white'
-            outlineColor='#fff'
-            activeOutlineColor='#3D3778'
-            secureTextEntry={true}
-            placeholderTextColor="white"
-            
-          />
-        )}
-      />
-      {errors.password && <Text style={styles.labelError} >{errors.password?.message}</Text>}
+        { !isLoading &&
+          <TouchableOpacity 
+            style={styles.button}
+            onPress={handleSubmit(handleSignIn)}>
+            <Text style={styles.buttonText}>Acessar</Text>
+          </TouchableOpacity>
+        }
+        <TouchableOpacity 
+        style={styles.buttonRegister}
+        onPress={ () => navigation.navigate('WhoYA')}>
+          <Text style={styles.registerText}>Não possui uma conta? Cadastre-se</Text>
+        </TouchableOpacity>
 
-      <TouchableOpacity 
-        style={styles.button}
-        onPress={handleSubmit(handleSignIn)}
-      >
-        <Text style={styles.buttonText}>Acessar</Text>
-      </TouchableOpacity>
-
-      <TouchableOpacity 
-      style={styles.buttonRegister}
-      onPress={ () => navigation.navigate('WhoYA')}
-      >
-        <Text style={styles.registerText}>Não possui uma conta? Cadastre-se</Text>
-      </TouchableOpacity>
-
-    </Animatable.View>
-
+      </Animatable.View>
     </ImageBackground>
    </View>  
     
   );
-}
 
+}
 const styles = StyleSheet.create({
   container:{
     flex: 1,
@@ -186,6 +254,8 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-start',
     color: '#ff375b',
     marginBottom: 8
+  },
+  activityInd: {
+    marginTop: 10
   }
-
-})
+});

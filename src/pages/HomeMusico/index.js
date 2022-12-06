@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, 
   Text, 
   StyleSheet, 
-  TouchableOpacity, 
+  TouchableOpacity,
   } from 'react-native'
 import { TextInput, Button} from 'react-native-paper'
 
@@ -11,6 +11,7 @@ import { useNavigation } from '@react-navigation/native'
 import * as Animatable from 'react-native-animatable'
 
 import QRCode  from 'react-native-qrcode-svg'
+import AsyncStorage from '@react-native-async-storage/async-storage';
  
 export default function HomeMusico() {
   const [shouldShow, setShouldShow] = useState(false)
@@ -18,19 +19,29 @@ export default function HomeMusico() {
   const [qrValue, setQrValue] = useState('')
   const navigation = useNavigation();
 
-
   function handleVisibility(){
     setShouldShow(true);
     setShouldShowButtom(true);
   }
 
+  function handlerSignOut(){
+    AsyncStorage.removeItem("MMUSIC-TOKEN");
+    navigation.navigate('Welcome');
+  }
+
+  useEffect(() => {
+    AsyncStorage.getItem("MMUSIC-UUID").then((id) => {
+      setQrValue(id)
+    })
+  }, [])
+
  return (
   <View  style={styles.container}>
       
   <View style={styles.containerLogo}>
-  <Button icon="arrow-u-left-top"
+  <Button icon="logout"
    style={styles.buttonVoltar}
-   onPress={ () => navigation.navigate('SignIn')}/>
+   onPress={handlerSignOut}/>
   <Animatable.Image
         animation="fadeIn"
         source={require('../../assets/logo.png')} 
@@ -57,7 +68,7 @@ export default function HomeMusico() {
       {
         shouldShow && (
           <QRCode
-            value={qrValue ? qrValue : 'http://www.google.com'}
+            value={qrValue ? qrValue : 'https://www.google.com.br'}
             size={250}
             color="white"
             backgroundColor='transparent'
