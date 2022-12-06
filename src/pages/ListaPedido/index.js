@@ -5,7 +5,8 @@ import { View,
   StyleSheet, 
   TouchableOpacity, 
   FlatList,
-  SafeAreaView
+  SafeAreaView,
+  Alert
   } from 'react-native'
 import { TextInput, Button} from 'react-native-paper'
 
@@ -14,33 +15,38 @@ import { useNavigation } from '@react-navigation/native'
 import * as Animatable from 'react-native-animatable'
 
 import api from '../../service/api';
+import userService from '../../service/UserService';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useDispatch } from 'react-redux'
+
 
 
 export default function ListaPedido() {
+  const dispatch = useDispatch();
   const navigation = useNavigation();
   const [episodes, setEpisodes] = useState([]);
+  //const [token, setToken] = useState("");
+  const [id, setId] = useState("");
 
-/*
-  useEffect(() => {
-    async function loadReports() {
 
-        try {
-           const response = await api.get('/user');
-
-           console.log(response.data);
-
-        } catch(error) {
-           console.log(error)
-        }
-
+  function handleToken(){
+    let userData = {
+      id: id
     }
+    userService.listOrder(userData)
+    .then((response) => {
+      setEpisodes(response.date)
+      console.log(response.data)
+    })
+    .catch((error) => {
+      console.log(error)
+      console.log("O usuario nao existe")
+      Alert.alert("O Usuario não existe")
+    }) 
+    console.log(userData)
+  }
 
-    loadReports(); 
-
-}, []); */
-
-
-  
+  /*
   const solicitar = async () => {
     try {
         const resposta = await api.get("/user");
@@ -50,10 +56,18 @@ export default function ListaPedido() {
     } catch (error) {
         console.log(error)
     }
-  }
+  } */
+
+
   useEffect(() => {
-    solicitar();
-  }, []);
+    AsyncStorage.getItem("MMUSIC-TOKEN").then((token) => {
+      dispatch({type: 'CHANGETOKEN', value: token })
+    })
+    AsyncStorage.getItem("MMUSIC-UUID").then((id) => {
+      setId(id)
+    })
+      handleToken;
+  }, [])
   
 
   const show = async () => {

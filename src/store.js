@@ -3,6 +3,7 @@ import  {createStore}  from 'redux'
 const INITIAL_STATE = {
     codeContent: '',
     statusContent: '',
+    token: ''
 }
 
 function qrContent( state = INITIAL_STATE, action ) {
@@ -11,6 +12,8 @@ function qrContent( state = INITIAL_STATE, action ) {
             return { ...state, codeContent: action.value }
         case 'CHANGESTATE':
             return { ...state, statusContent: action.value}
+        case 'CHANGETOKEN':
+            return { ...state, token: action.value}
         default:
             return state
     }

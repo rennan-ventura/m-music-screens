@@ -1,8 +1,12 @@
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import axios from 'axios'
 import Config from '../util/Config'
+import { useSelector } from 'react-redux'
+
+
 
 class UserService{
+    
 
     async signup(data) {
         return axios({
@@ -27,7 +31,6 @@ class UserService{
             headers: Config.HEADERS_REQUEST
         }).then((response) => {
             AsyncStorage.setItem("MMUSIC-TOKEN", response.data.accessToken);
-            AsyncStorage.setItem("MMUSIC-TOKENTYPE", response.data.tokenType);
             AsyncStorage.setItem("MMUSIC-UUID", response.data.id);
             AsyncStorage.setItem("MMUSIC-USERNAME", response.data.username);
             return Promise.resolve(response)
@@ -51,11 +54,14 @@ class UserService{
     }
 
     async listOrder(data) {
+        const token = useSelector( state => state.token )
         return axios({
-            url: Config.API_URL + '/api/orders/user/' + data,
+            url: Config.API_URL + '/api/orders/user/' + data.id + '/list',
             method: "POST",
             timeout: Config.TIMEOUT_REQUEST,
-            headers: Config.HEADERS_REQUEST
+            headers: {
+                Authorization: token
+            } 
         }).then((response) => {
             return Promise.resolve(response)
         }).catch((error) => {
