@@ -22,13 +22,15 @@ export default function PedidoForms(props) {
   const [author, setAuthor] = useState('');
   const [isLoading, setLoading] = useState(false);
   const [idRequester, setIdRequester] = useState('');
+  const [token, setToken] = useState('');
   
   function handleOrder(){
     setLoading(true);
     let userData = {
       attendant: codeContent,
       requester: idRequester,
-      description: `${music} - ${author}`
+      description: `${music} - ${author}`,
+      token: token
     }
     userService.postOrder(userData)
     .then((response) => {
@@ -49,6 +51,11 @@ export default function PedidoForms(props) {
   useEffect(() => {
     AsyncStorage.getItem("MMUSIC-UUID").then((id) => {
       setIdRequester(id)
+    }).catch((error) => {
+      console.log(error)
+    })
+    AsyncStorage.getItem("MMUSIC-TOKEN").then((token) => {
+      setToken(token)
     }).catch((error) => {
       console.log(error)
     })

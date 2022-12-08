@@ -17,62 +17,48 @@ import * as Animatable from 'react-native-animatable'
 import api from '../../service/api';
 import userService from '../../service/UserService';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useDispatch } from 'react-redux'
 
 
 
 export default function ListaPedido() {
-  const dispatch = useDispatch();
   const navigation = useNavigation();
-  const [episodes, setEpisodes] = useState([]);
-  //const [token, setToken] = useState("");
+  const [pedidos, setPedidos] = useState([]);
+  const [token, setToken] = useState("");
   const [id, setId] = useState("");
 
 
   function handleToken(){
+    console.log("entrou")
     let userData = {
-      id: id
+      id: id,
+      token: token
     }
     userService.listOrder(userData)
     .then((response) => {
-      setEpisodes(response.date)
-      console.log(response.data)
+      setPedidos(response.data.listOfOrders)
+      console.log(response.data.listOfOrders)
     })
     .catch((error) => {
       console.log(error)
-      console.log("O usuario nao existe")
-      Alert.alert("O Usuario não existe")
+      Alert.alert("sem musicas")
     }) 
-    console.log(userData)
   }
-
-  /*
-  const solicitar = async () => {
-    try {
-        const resposta = await api.get("/user");
-        console.log(resposta.data);
-        setEpisodes(resposta.data);
-        console.log(episodes);
-    } catch (error) {
-        console.log(error)
-    }
-  } */
-
 
   useEffect(() => {
     AsyncStorage.getItem("MMUSIC-TOKEN").then((token) => {
-      dispatch({type: 'CHANGETOKEN', value: token })
+      setToken(token)
+      console.log(token)
     })
     AsyncStorage.getItem("MMUSIC-UUID").then((id) => {
       setId(id)
+      console.log(id)
     })
-      handleToken;
   }, [])
   
 
   const show = async () => {
     try {
-        console.log(episodes);
+        handleToken();
     } catch (error) {
         console.log(error)
     }
@@ -104,9 +90,9 @@ export default function ListaPedido() {
     <Animatable.View animation="fadeInUp" style={styles.containerForm}>
         
         <FlatList
-        data={episodes}
+        data={pedidos}
         keyExtractor={ item => item.id}
-        renderItem={({item}) => <ListItem data={item} />}
+        renderItem={({item}) => <ListItem data={item}  />}
         />
 
 
@@ -118,11 +104,33 @@ export default function ListaPedido() {
 }
 
 function ListItem({ data }){
+  const [token, setToken] = useState('')
+  useEffect(() => {
+    AsyncStorage.getItem("MMUSIC-TOKEN").then((token) => {
+      setToken(token)
+    })
+  }, [])
+  
+
+  function updateStatus(){
+    console.log(data.id)
+    let orderData = {
+        token: token,
+        id: data.id
+    }
+    userService.changeStatusOrder(orderData)
+    .then((response) => {
+      console.log("foi?")
+    })
+    .catch((error) => {
+      console.log(error)
+    })
+  }
 
     return (
-       <TouchableOpacity>
+       <TouchableOpacity onLongPress={updateStatus} >
            <View style={styles.containerItemList}>
-                   <Text style={styles.textItem} >nome: {data.name}</Text>
+                   <Text style={styles.textItem} >Musica: {data.description}</Text>
            </View>
        </TouchableOpacity>
      );
@@ -170,7 +178,7 @@ const styles = StyleSheet.create({
   buttonVoltar:{
     alignSelf: 'baseline',
     alignItems: 'center',
-    marginTop: 5,
+    marginTop: 20,
   },
   textoWelcome: {
     fontSize: 25,
@@ -193,7 +201,11 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#1f1f1f',
     justifyContent: 'center',
-    padding: 16
+    padding: 16,
+    borderWidth: 2,
+    borderColor: '#FFB052',
+    marginTop: 10,
+    borderRadius: 25,
   },
     textItem :{
     color: '#fff',

@@ -115,7 +115,7 @@ const styles = StyleSheet.create({
     },
     containerForm:{
       backgroundColor: 'transparent',
-      flex: 1,
+      flex: 1.3,
       borderTopLeftRadius: 25,
       borderTopRightRadius: 25,
       paddingStart: '5%',
@@ -170,7 +170,7 @@ const styles = StyleSheet.create({
       width: '60%',
       borderRadius: 20,
       paddingVertical: 8,
-      marginTop: 14,
+      marginTop: 20,
       justifyContent: 'center',
       alignItems: 'center',
       alignSelf: 'center',
@@ -181,7 +181,7 @@ const styles = StyleSheet.create({
       fontWeight: 'bold'
     },
     textoWelcome: {
-      fontSize: 25,
+      fontSize: 23,
       color: 'white',
       fontWeight: 'bold',
       marginBottom: 10

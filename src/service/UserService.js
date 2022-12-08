@@ -1,7 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import axios from 'axios'
 import Config from '../util/Config'
-import { useSelector } from 'react-redux'
 
 
 
@@ -40,12 +39,16 @@ class UserService{
     }
 
     async postOrder(data) {
+        const token = data.token
         return axios({
             url: Config.API_URL + '/api/orders',
             method: "POST",
             timeout: Config.TIMEOUT_REQUEST,
             data: data,
-            headers: Config.HEADERS_REQUEST
+            headers: {
+                Accept: 'application/json',
+                Authorization: token
+            }
         }).then((response) => {
             return Promise.resolve(response)
         }).catch((error) => {
@@ -54,13 +57,31 @@ class UserService{
     }
 
     async listOrder(data) {
-        const token = useSelector( state => state.token )
+        const token = data.token;
         return axios({
             url: Config.API_URL + '/api/orders/user/' + data.id + '/list',
-            method: "POST",
+            method: "GET",
             timeout: Config.TIMEOUT_REQUEST,
             headers: {
-                Authorization: token
+                Accept: 'application/json', 
+                Authorization: token,
+            } 
+        }).then((response) => {
+            return Promise.resolve(response)
+        }).catch((error) => {
+            return Promise.reject(error)
+        })
+    }
+
+    async changeStatusOrder(data) {
+        const token = data.token;
+        return axios({
+            url: Config.API_URL + '/api/orders/' + data.id + '/status',
+            method: "PATCH",
+            timeout: Config.TIMEOUT_REQUEST,
+            headers: {
+                Accept: 'application/json', 
+                Authorization: token,
             } 
         }).then((response) => {
             return Promise.resolve(response)
