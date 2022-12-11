@@ -8,13 +8,12 @@ import { View,
   SafeAreaView,
   Alert
   } from 'react-native'
-import { TextInput, Button} from 'react-native-paper'
+import { TextInput, Button, Provider, Portal, Dialog, Paragraph} from 'react-native-paper'
 
 import { useNavigation } from '@react-navigation/native'
 
 import * as Animatable from 'react-native-animatable'
 
-import api from '../../service/api';
 import userService from '../../service/UserService';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -25,6 +24,8 @@ export default function ListaPedido() {
   const [pedidos, setPedidos] = useState([]);
   const [token, setToken] = useState("");
   const [id, setId] = useState("");
+
+ 
 
 
   function handleToken(){
@@ -40,7 +41,7 @@ export default function ListaPedido() {
     })
     .catch((error) => {
       console.log(error)
-      Alert.alert("sem musicas")
+      Alert.alert("Ops", "Você ainda não possui nenhum pedido")
     }) 
   }
 
@@ -95,6 +96,8 @@ export default function ListaPedido() {
         renderItem={({item}) => <ListItem data={item}  />}
         />
 
+        
+
 
       
     </Animatable.View>
@@ -110,9 +113,15 @@ function ListItem({ data }){
       setToken(token)
     })
   }, [])
+  const [visible, setVisible] = useState(false);
+
+  const showDialog = () => setVisible(true);
+
+  const hideDialog = () => setVisible(false);
   
 
   function updateStatus(){
+    hideDialog();
     console.log(data.id)
     let orderData = {
         token: token,
@@ -128,11 +137,22 @@ function ListItem({ data }){
   }
 
     return (
-       <TouchableOpacity onLongPress={updateStatus} >
-           <View style={styles.containerItemList}>
-                   <Text style={styles.textItem} >Musica: {data.description}</Text>
-           </View>
-       </TouchableOpacity>
+        <TouchableOpacity onLongPress={() => {Alert.alert(
+          "Atenção",
+          "A música já foi tocada?",
+          [
+            {
+              text: "Não",
+              onPress: () => console.log("Cancel Pressed"),
+              style: "cancel"
+            },
+            { text: "Sim", onPress: updateStatus }
+          ]
+        );}}>
+            <View style={styles.containerItemList}>
+                    <Text style={styles.textItem} >Musica: {data.description}</Text>
+            </View>
+        </TouchableOpacity>
      );
    }
 

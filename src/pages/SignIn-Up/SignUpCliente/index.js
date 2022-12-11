@@ -4,6 +4,7 @@ import { View,
   Text, 
   StyleSheet, 
   TouchableOpacity,
+  Alert,
   } from 'react-native'
 import { TextInput, Button, ActivityIndicator } from 'react-native-paper'
 
@@ -36,25 +37,28 @@ export default function SignUpCliente() {
   const [isLoading, setLoading] = useState(false)
 
   function handleSignUp(data){
-    setLoading(true);
-    let userData = {
-      username: data.username,
-      email: data.email,
-      password: data.password,
-      status: status
-    }
-    userService.signup(userData)
-    .then((response) => {
-      setLoading(false);
-      console.log(response.data)
-      navigation.navigate('SignIn')
-    })
-    .catch((error) => {
-      setLoading(false);
-      console.log(error)
-      console.log("deu erro")
-    }) 
-    console.log(userData)
+    if (data.password === data.passwordConfirm){
+      setLoading(true);
+      let userData = {
+        username: data.username,
+        email: data.email,
+        password: data.password,
+        status: status
+      }
+      userService.signup(userData)
+      .then((response) => {
+        setLoading(false);
+        console.log(response.data)
+        navigation.navigate('SignIn')
+      })
+      .catch((error) => {
+        setLoading(false);
+        console.log(error)
+        Alert.alert("Ops", "Usuário já existe")
+      })
+    } else{
+    Alert.alert("Erro", "as senhas não batem")
+  }
   }
 
  return (
@@ -139,6 +143,7 @@ export default function SignUpCliente() {
             outlineColor='#fff'
             activeOutlineColor='#3597A6'
             placeholderTextColor='white'
+            secureTextEntry={true}
           />
         )}
       />
@@ -159,6 +164,7 @@ export default function SignUpCliente() {
             outlineColor='#fff'
             activeOutlineColor='#3597A6'
             placeholderTextColor='white'
+            secureTextEntry={true}
           />
         )}
       />

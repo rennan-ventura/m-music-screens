@@ -57,8 +57,7 @@ export default function SignIn() {
     .catch((error) => {
       setLoading(false);
       console.log(error)
-      console.log("O usuario nao existe")
-      Alert.alert("O Usuario não existe")
+      Alert.alert("Ops", "Username ou senha inválidos")
     }) 
     console.log(userData)
   }

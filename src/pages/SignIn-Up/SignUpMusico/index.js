@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import { View, 
   Text, 
   StyleSheet, 
-  TouchableOpacity, 
+  TouchableOpacity,
+  Alert 
   } from 'react-native'
 import { TextInput, Button, ActivityIndicator} from 'react-native-paper'
 import { useNavigation } from '@react-navigation/native'
@@ -29,25 +30,29 @@ export default function SignUpMusico() {
   const [isLoading, setLoading] = useState(false)
 
   function handleSignUp(data){
-    setLoading(true);
-    let userData = {
-      email: data.email,
-      username: data.username,
-      password: data.password,
-      status: status
+    if (data.password === data.passwordConfirm){
+      setLoading(true);
+      let userData = {
+        email: data.email,
+        username: data.username,
+        password: data.password,
+        status: status
+      }
+      userService.signup(userData)
+      .then((response) => {
+        setLoading(false);
+        console.log(response.data)
+        navigation.navigate('SignIn')
+      })
+      .catch((error) => {
+        setLoading(false);
+        console.log(error)
+        Alert.alert("Ops", "Usuário já existe")
+      }) 
+      console.log(userData)
+    } else{
+      Alert.alert("Erro", "as senhas não batem")
     }
-    userService.signup(userData)
-    .then((response) => {
-      setLoading(false);
-      console.log(response.data)
-      navigation.navigate('SignIn')
-    })
-    .catch((error) => {
-      setLoading(false);
-      console.log(error)
-      console.log("deu erro")
-    }) 
-    console.log(userData)
   }
  return (
    <View  style={styles.container}>
@@ -130,6 +135,7 @@ export default function SignUpMusico() {
             outlineColor='#fff'
             activeOutlineColor='#FFB052'
             placeholderTextColor='white'
+            secureTextEntry={true}
           />
         )}
       />
@@ -150,6 +156,7 @@ export default function SignUpMusico() {
             outlineColor='#fff'
             activeOutlineColor='#FFB052'
             placeholderTextColor='white'
+            secureTextEntry={true}
           />
         )}
       />
