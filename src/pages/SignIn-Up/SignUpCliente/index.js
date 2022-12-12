@@ -48,7 +48,6 @@ export default function SignUpCliente() {
       userService.signup(userData)
       .then((response) => {
         setLoading(false);
-        console.log(response.data)
         navigation.navigate('SignIn')
       })
       .catch((error) => {

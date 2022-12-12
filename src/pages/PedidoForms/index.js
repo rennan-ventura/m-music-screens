@@ -4,6 +4,7 @@ import {
   Text, 
   StyleSheet, 
   TouchableOpacity,
+  Alert
   } from 'react-native'
 import { TextInput, Button, ActivityIndicator } from 'react-native-paper'
 
@@ -37,15 +38,13 @@ export default function PedidoForms(props) {
       setLoading(false);
       setMusic('');
       setAuthor('');
-      console.log(response.data)
 
     })
     .catch((error) => {
       setLoading(false);
       console.log(error)
-      console.log("falha ao fazer pedido")
+      Alert.alert("Ops", "Scaneie um QrCode válido")
     }) 
-    console.log(userData)
   }
 
   useEffect(() => {

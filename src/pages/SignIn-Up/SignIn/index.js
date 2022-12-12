@@ -43,7 +43,6 @@ export default function SignIn() {
     userService.signin(userData)
     .then((response) => {
       setLoading(false);
-      console.log(response.data)
       if(response.data.status === 'REQUESTER')
       {
       navigation.navigate('HomeCliente')
@@ -59,7 +58,6 @@ export default function SignIn() {
       console.log(error)
       Alert.alert("Ops", "Username ou senha inválidos")
     }) 
-    console.log(userData)
   }
   
   /*
@@ -90,7 +88,7 @@ export default function SignIn() {
 
   useEffect(() => {
     AsyncStorage.getItem("MMUSIC-TOKEN").then((token) => {
-      console.log(token)
+      
     })
   }, []) 
 

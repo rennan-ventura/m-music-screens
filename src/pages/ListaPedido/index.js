@@ -37,7 +37,6 @@ export default function ListaPedido() {
     userService.listOrder(userData)
     .then((response) => {
       setPedidos(response.data.listOfOrders)
-      console.log(response.data.listOfOrders)
     })
     .catch((error) => {
       console.log(error)
@@ -48,12 +47,11 @@ export default function ListaPedido() {
   useEffect(() => {
     AsyncStorage.getItem("MMUSIC-TOKEN").then((token) => {
       setToken(token)
-      console.log(token)
     })
     AsyncStorage.getItem("MMUSIC-UUID").then((id) => {
       setId(id)
-      console.log(id)
     })
+    handleToken();
   }, [])
   
 

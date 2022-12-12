@@ -41,7 +41,6 @@ export default function SignUpMusico() {
       userService.signup(userData)
       .then((response) => {
         setLoading(false);
-        console.log(response.data)
         navigation.navigate('SignIn')
       })
       .catch((error) => {
@@ -49,7 +48,6 @@ export default function SignUpMusico() {
         console.log(error)
         Alert.alert("Ops", "Usuário já existe")
       }) 
-      console.log(userData)
     } else{
       Alert.alert("Erro", "as senhas não batem")
     }

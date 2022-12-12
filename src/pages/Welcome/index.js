@@ -28,7 +28,7 @@ export default function Welcome() {
 
     <Animatable.View delay={600} animation='fadeInUp' style={styles.containerForm}>
 
-      <Text style={styles.title}>Começe a solicitar musicas agora!!!</Text>
+      <Text style={styles.title}>Começe a solicitar músicas agora!!!</Text>
       <Text style={styles.text}>Faça o login para começar</Text>
 
       <TouchableOpacity 
